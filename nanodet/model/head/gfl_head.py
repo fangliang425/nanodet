@@ -48,7 +48,7 @@ class Integral(nn.Module):
         super(Integral, self).__init__()
         self.reg_max = reg_max
         self.register_buffer(
-            "project", torch.linspace(0, self.reg_max, self.reg_max + 1)
+            "project", torch.linspace(0, self.reg_max, self.reg_max + 1).view(1, self.reg_max + 1)
         )
 
     def forward(self, x):
