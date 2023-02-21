@@ -19,6 +19,7 @@ import warnings
 import pytorch_lightning as pl
 import torch
 from pytorch_lightning.callbacks import TQDMProgressBar
+from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 
 from nanodet.data.collate import naive_collate
 from nanodet.data.dataset import build_dataset
@@ -139,7 +140,7 @@ def main(args):
         devices=devices,
         log_every_n_steps=cfg.log.interval,
         num_sanity_val_steps=0,
-        callbacks=[TQDMProgressBar(refresh_rate=0)],  # disable tqdm bar
+        callbacks=[TQDMProgressBar(refresh_rate=0), EarlyStopping(monitor="mAP", patience=cfg.schedule.patience, mode="max", verbose=True)],  # disable tqdm bar
         logger=logger,
         benchmark=cfg.get("cudnn_benchmark", True),
         gradient_clip_val=cfg.get("grad_clip", 0.0),

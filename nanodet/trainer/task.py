@@ -162,6 +162,7 @@ class TrainingTask(LightningModule):
                 all_results, self.cfg.save_dir, rank=self.local_rank
             )
             metric = eval_results[self.cfg.evaluator.save_key]
+            self.log("mAP", metric)
             # save best model
             if metric > self.save_flag:
                 self.save_flag = metric
